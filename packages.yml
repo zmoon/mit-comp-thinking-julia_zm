@@ -1,0 +1,49 @@
+#
+# trying to learn some Julia, so documenting what the packages we need are.
+# 
+# TODO: std lib ones as well maybe
+#
+# trying to keep in alphabetical order
+#
+# keys:
+# - url (link to project repo/website)
+# - docs (link to docs/manual/something)
+# - note (markdown notes on the package)
+#
+
+BenchmarkTools
+  gh: https://github.com/JuliaCI/BenchmarkTools.jl
+  docs: https://github.com/JuliaCI/BenchmarkTools.jl/blob/master/doc/manual.md
+  notes: >
+    Provides useful macros for benchmarking expressions, such as `@btime`. 
+
+Compose
+  url: 
+  notes: >
+    Declarative graphics library. Same original author as [Gadfly](http://gadflyjl.org/stable/),
+    a ggplot2-inspired plotting library.
+
+ImageFiltering
+  notes: >
+    Provides the kernels that we used with the convolutions stuff.
+
+ImageMagick
+  gh: https://github.com/JuliaIO/ImageMagick.jl
+  notes: >
+    A thin wrapper around [ImageMagick](http://www.imagemagick.org/).
+    They say not to use `using ImageMagick`; instead use `using FileIO`.
+    Furthermore, they note that loading `Images` loads `FileIO` as well,
+    so it is enough just to have `ImageMagick` installed and it will be used
+    to open images with `load()`.
+
+Images
+
+Plots
+
+Pluto
+
+PlutoUI
+
+Statistics
+
+TestImages
