@@ -10,6 +10,6 @@ Differences:
 Notes:
 * including `Project.toml` seems to activate the standard Jupyter Julia support (IJulia),
   which we don't need for Pluto
-  - assumes Manifest/Project are in REPO_DIR
-    - activates this, `instantiate`s (download dependencies), `resolve`s (update manifest), 
+  - looks for `Manifest`/`Project.toml` in `REPO_DIR`
+    - activates this project (environment), `instantiate`s (download dependencies), `resolve`s (update manifest), 
       `precompile`s (all project dependencies)
