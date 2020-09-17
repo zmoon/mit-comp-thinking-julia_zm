@@ -333,7 +333,7 @@ _Write the function in the same cell as `noisify(x::Number)` from the last exerc
 """
 
 # ╔═╡ 774b4ce6-ee1b-11ea-2b48-e38ee25fc89b
-@bind color_noise Slider(0:0.01:1, show_value=true)
+@bind color_noise Slider(0:0.01:1, show_value=true, default=0.5)
 
 # ╔═╡ 7e4aeb70-ee1b-11ea-100f-1952ba66f80f
 noisify(red_, color_noise)
@@ -349,7 +349,7 @@ _Write the function in the same cell as `noisify(x::Number)` from the last exerc
 """
 
 # ╔═╡ e70a84d4-ee0c-11ea-0640-bf78653ba102
-@bind philip_noise Slider(0:0.01:8, show_value=true)
+@bind philip_noise Slider(0:0.01:8, show_value=true, default=0.4)
 
 # ╔═╡ 9604bc44-ee1b-11ea-28f8-7f7af8d0cbb2
 
@@ -535,10 +535,13 @@ md"""
 """
 
 # ╔═╡ 9edb9010-f5d5-11ea-375a-a90ba7aff141
-@bind l_box Slider(1:50, show_value=true)
+@bind l_box Slider(1:50, show_value=true, default=5)
 
 # ╔═╡ ca1ac5f4-ee1c-11ea-3d00-ff5268866f87
 colored_line(blur_1D(v, l_box))
+
+# ╔═╡ 34abf7b2-f8f6-11ea-302b-df60009418f9
+colored_line(v)
 
 # ╔═╡ 80ab64f4-ee09-11ea-29b4-498112ed0799
 md"""
@@ -619,7 +622,7 @@ end
 md"Let's test your kernel function!"
 
 # ╔═╡ 2a9dd06a-ee13-11ea-3f84-67bb309c77a8
-@bind gaussian_kernel_size_1D Slider(1:2:11, show_value=true)
+@bind gaussian_kernel_size_1D Slider(1:2:11, show_value=true, default=7)
 
 # ╔═╡ cad5f7b0-f5d9-11ea-0475-c1e62d95d813
 gaussian_kernel(gaussian_kernel_size_1D)
@@ -1582,8 +1585,9 @@ with_sobel_edge_detect(sobel_camera_image)  # full grayscale
 # ╠═807e5662-ee09-11ea-3005-21fdcc36b023
 # ╟─808deca8-ee09-11ea-0ee3-1586fa1ce282
 # ╟─809f5330-ee09-11ea-0e5b-415044b6ac1f
-# ╠═9edb9010-f5d5-11ea-375a-a90ba7aff141
+# ╟─9edb9010-f5d5-11ea-375a-a90ba7aff141
 # ╠═ca1ac5f4-ee1c-11ea-3d00-ff5268866f87
+# ╠═34abf7b2-f8f6-11ea-302b-df60009418f9
 # ╟─ea435e58-ee11-11ea-3785-01af8dd72360
 # ╟─80ab64f4-ee09-11ea-29b4-498112ed0799
 # ╠═28e20950-ee0c-11ea-0e0a-b5f2e570b56e
@@ -1595,7 +1599,7 @@ with_sobel_edge_detect(sobel_camera_image)  # full grayscale
 # ╟─80b7566a-ee09-11ea-3939-6fab470f9ec8
 # ╠═1c8b4658-ee0c-11ea-2ede-9b9ed7d3125e
 # ╟─f8bd22b8-ee14-11ea-04aa-ab16fd01826e
-# ╠═2a9dd06a-ee13-11ea-3f84-67bb309c77a8
+# ╟─2a9dd06a-ee13-11ea-3f84-67bb309c77a8
 # ╠═cad5f7b0-f5d9-11ea-0475-c1e62d95d813
 # ╠═98b357a0-f5d9-11ea-16d3-1d1256b5e561
 # ╟─b424e2aa-ee14-11ea-33fa-35491e0b9c9d
