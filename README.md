@@ -1,6 +1,7 @@
 # mit-comp-thinking-julia_zm
-my hw solns for [mitmath/18S191](https://github.com/mitmath/18S191); playing with [Pluto](https://github.com/fonsp/Pluto.jl)/[Binder](https://mybinder.org/)
+my hw solns for [mitmath/18S191](https://github.com/mitmath/18S191) (Fa20); playing with [Pluto](https://github.com/fonsp/Pluto.jl)/[Binder](https://mybinder.org/)
 
+I am just trying to learn some Julia, so issues/PRs related to improving the code/understanding are welcome.
 
 ## Packages
 
