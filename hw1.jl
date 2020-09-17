@@ -16,8 +16,8 @@ end
 # ╔═╡ 3e4eadb0-f8ee-11ea-2c15-a5bf17a98f5d
 # imports
 begin
-	using Images
-	using PlutoUI
+    using Images
+    using PlutoUI
 end
 
 # ╔═╡ 83eb9ca0-ed68-11ea-0bc5-99a09c68f867
@@ -60,12 +60,12 @@ md"👉 Make a function `mean` using a `for` loop, which computes the mean/avera
 
 # ╔═╡ 0ffa8354-edee-11ea-2883-9d5bfea4a236
 function mean(x)
-	n = length(x)
-	tot = 0
-	for i in 1:n
-		tot += x[i]
-	end
-	return tot/n
+    n = length(x)
+    tot = 0
+    for i in 1:n
+        tot += x[i]
+    end
+    return tot/n
 end
 
 # ╔═╡ 1f104ce4-ee0e-11ea-2029-1d9c817175af
@@ -82,8 +82,8 @@ md"""👉 Write a function `demean`, which takes a vector `x` and subtracts the 
 
 # ╔═╡ ec5efe8c-edef-11ea-2c6f-afaaeb5bc50c
 function demean(x)
-	m = mean(x)
-	return x .- m  # explicit broadcasting of `-`
+    m = mean(x)
+    return x .- m  # explicit broadcasting of `-`
 end
 
 # ╔═╡ 29e10640-edf0-11ea-0398-17dbf4242de3
@@ -93,10 +93,10 @@ _Due to floating-point round-off error it may *not* be *exactly* 0._"
 
 # ╔═╡ 6f67657e-ee1a-11ea-0c2f-3d567bcfa6ea
 if ismissing(random_vect)
-	md"""
-	!!! info
-	    The following cells error because `random_vect` is not yet defined. Have you done the first exercise?
-	"""
+    md"""
+    !!! info
+        The following cells error because `random_vect` is not yet defined. Have you done the first exercise?
+    """
 end
 
 # ╔═╡ 73ef1d50-edf0-11ea-343c-d71706874c82
@@ -114,9 +114,9 @@ md"""
 
 # ╔═╡ b6b65b94-edf0-11ea-3686-fbff0ff53d08
 function create_bar()
-	bar = zeros(100)
-	bar[40:60] .= 1
-	return bar
+    bar = zeros(100)
+    bar[40:60] .= 1
+    return bar
 end
 
 # ╔═╡ 22f28dae-edf2-11ea-25b5-11c369ae1253
@@ -128,10 +128,10 @@ md"""
 
 # ╔═╡ 8c19fb72-ed6c-11ea-2728-3fa9219eddc4
 function vecvec_to_matrix(vecvec)
-	return reduce(hcat, vecvec)
-	# this is apparently the official solution:
-	# https://discourse.julialang.org/t/very-best-way-to-concatenate-an-array-of-arrays/8672/26
-	# using vcat instead will concat end-to-end, giving [1, 2, 3, 4]
+    return reduce(hcat, vecvec)
+    # this is apparently the official solution:
+    # https://discourse.julialang.org/t/very-best-way-to-concatenate-an-array-of-arrays/8672/26
+    # using vcat instead will concat end-to-end, giving [1, 2, 3, 4]
 end
 
 # ╔═╡ c4761a7e-edf2-11ea-1e75-118e73dadbed
@@ -146,9 +146,9 @@ md"""
 
 # ╔═╡ 9f1c6d04-ed6c-11ea-007b-75e7e780703d
 function matrix_to_vecvec(matrix)
-	return [matrix[:, i] for i in 1:size(matrix, 2)]
-	# not sure of the most efficient way (couldn't really find)
-	# but this works
+    return [matrix[:, i] for i in 1:size(matrix, 2)]
+    # not sure of the most efficient way (couldn't really find)
+    # but this works
 end
 
 # ╔═╡ 70955aca-ed6e-11ea-2330-89b4d20b1795
@@ -156,8 +156,8 @@ matrix_to_vecvec([6 7; 8 9])
 
 # ╔═╡ 5da8cbe8-eded-11ea-2e43-c5b7cc71e133
 begin
-	colored_line(x::Vector{<:Real}) = Gray.(Float64.((hcat(x)')))
-	colored_line(x::Any) = nothing
+    colored_line(x::Vector{<:Real}) = Gray.(Float64.((hcat(x)')))
+    colored_line(x::Any) = nothing
 end
 
 # ╔═╡ 56ced344-eded-11ea-3e81-3936e9ad5777
@@ -196,16 +196,16 @@ md"""
 
 # ╔═╡ f6898df6-ee07-11ea-2838-fde9bc739c11
 function mean_colors(image)
-	cv = channelview(image)  # first dim is the 3 channels: r, g, b
-	return tuple([mean(cv[i,:,:]) for i in 1:size(cv, 1)]...)
-	# `...` here is an example of splatting (unpacks the elements of the vec)
+    cv = channelview(image)  # first dim is the 3 channels: r, g, b
+    return tuple([mean(cv[i,:,:]) for i in 1:size(cv, 1)]...)
+    # `...` here is an example of splatting (unpacks the elements of the vec)
 end
 
 # ╔═╡ 04c0dab0-f5cd-11ea-2858-9577e589efa5
 # the example that is being checked
 begin
-	input = reshape([RGB(1.0, 1.0, 1.0), RGB(1.0, 1.0, 0.0)], (2,1))	
-	result = mean_colors(input)
+    input = reshape([RGB(1.0, 1.0, 1.0), RGB(1.0, 1.0, 0.0)], (2,1))	
+    result = mean_colors(input)
 end
 
 # ╔═╡ d75ec078-ee0d-11ea-3723-71fb8eecb040
@@ -219,19 +219,19 @@ md"""
 
 # ╔═╡ f6991a50-ee07-11ea-0bc4-1d68eb028e6a
 begin
-	function quantize(x::Number)
-		return floor(x, digits=1)
-	end
-	
-	function quantize(color::AbstractRGB)
-		# you will write me in a later exercise!
-		return floor.([color.r, color.g, color.b], digits=1)
-	end
-	
-	function quantize(image::AbstractMatrix)
-		# you will write me in a later exercise!
-		return quantize.(image)
-	end
+    function quantize(x::Number)
+        return floor(x, digits=1)
+    end
+    
+    function quantize(color::AbstractRGB)
+        # you will write me in a later exercise!
+        return floor.([color.r, color.g, color.b], digits=1)
+    end
+    
+    function quantize(image::AbstractMatrix)
+        # you will write me in a later exercise!
+        return quantize.(image)
+    end
 end
 
 # ╔═╡ f6a655f8-ee07-11ea-13b6-43ca404ddfc7
@@ -268,7 +268,7 @@ md"""
 
 # ╔═╡ 63e8d636-ee0b-11ea-173d-bd3327347d55
 function invert(color::AbstractRGB)
-	return RGB(1-color.r, 1-color.g, 1-color.b)
+    return RGB(1-color.r, 1-color.g, 1-color.b)
 end
 
 # ╔═╡ 2cc2f84e-ee0d-11ea-373b-e7ad3204bb00
@@ -297,32 +297,32 @@ md"""
 
 # ╔═╡ f6e2cb2a-ee07-11ea-06ee-1b77e34c1e91
 begin
-	function myclamp(x::Number)
-		if x < 0
-			return 0
-		elseif x > 1
-			return 1
-		else
-			return x
-		end
-	end
-	
-	function noisify(x::Number, s)
-		r = s * (2 * rand() - 1)
-		return myclamp(x + r)
-	end
-	
-	function noisify(color::AbstractRGB, s)
-		r = noisify(color.r, s)
-		g = noisify(color.g, s)
-		b = noisify(color.b, s)
-		return RGB(r, g, b)
-	end
-	
-	function noisify(image::AbstractMatrix, s)
-		# you will write me in a later exercise!
-		return noisify.(image, s)
-	end
+    function myclamp(x::Number)
+        if x < 0
+            return 0
+        elseif x > 1
+            return 1
+        else
+            return x
+        end
+    end
+    
+    function noisify(x::Number, s)
+        r = s * (2 * rand() - 1)
+        return myclamp(x + r)
+    end
+    
+    function noisify(color::AbstractRGB, s)
+        r = noisify(color.r, s)
+        g = noisify(color.g, s)
+        b = noisify(color.b, s)
+        return RGB(r, g, b)
+    end
+    
+    function noisify(image::AbstractMatrix, s)
+        # you will write me in a later exercise!
+        return noisify.(image, s)
+    end
 end
 
 # ╔═╡ f6fc1312-ee07-11ea-39a0-299b67aee3d8
@@ -376,8 +376,8 @@ decimate(image, ratio=5) = image[1:ratio:end, 1:ratio:end]
 
 # ╔═╡ c8ecfe5c-ee05-11ea-322b-4b2714898831
 philip = let
-	original = Images.load(philip_file)
-	decimate(original, 8)
+    original = Images.load(philip_file)
+    decimate(original, 8)
 end
 
 # ╔═╡ 945f276e-f5d3-11ea-07c8-c14f72f10b1a
@@ -462,9 +462,9 @@ A better solution is to use the *closest* value that is inside the vector. Effec
 
 # ╔═╡ 802bec56-ee09-11ea-043e-51cf1db02a34
 function extend(v, i)
-	n = length(v)
-	i = clamp.(i, 1, n)  # broadcast to allow using vector of indices
-	return v[i]
+    n = length(v)
+    i = clamp.(i, 1, n)  # broadcast to allow using vector of indices
+    return v[i]
 end
 
 # ╔═╡ b7f3994c-ee1b-11ea-211a-d144db8eafc2
@@ -490,9 +490,9 @@ md"Extended with your `extend`:"
 
 # ╔═╡ 45c4da9a-ee0f-11ea-2c5b-1f6704559137
 if extend(v,1) === missing
-	missing
+    missing
 else
-	colored_line([extend(example_vector, i) for i in -1:12])
+    colored_line([extend(example_vector, i) for i in -1:12])
 end
 
 # ╔═╡ 80664e8c-ee09-11ea-0702-711bce271315
@@ -503,29 +503,29 @@ md"""
 
 # ╔═╡ 807e5662-ee09-11ea-3005-21fdcc36b023
 function blur_1D(v, l)
-	iwin = collect(1:l) .- (l÷2 + 1)  # `÷` for integer division
-	n = length(v)
-	vnew = zeros(size(v))
-	for i in 1:n
-		vnew[i] = sum(extend(v, iwin .+ i)) / l
-	end
-	return vnew
+    iwin = collect(1:l) .- (l÷2 + 1)  # `÷` for integer division
+    n = length(v)
+    vnew = zeros(size(v))
+    for i in 1:n
+        vnew[i] = sum(extend(v, iwin .+ i)) / l
+    end
+    return vnew
 end
 
 # ╔═╡ 808deca8-ee09-11ea-0ee3-1586fa1ce282
 let
-	try
-		test_v = rand(n)
-		original = copy(test_v)
-		blur_1D(test_v, 5)
-		if test_v != original
-			md"""
-			!!! danger "Oopsie!"
-			    It looks like your function _modifies_ `v`. Can you write it without doing so? Maybe you can use `copy`.
-			"""
-		end
-	catch
-	end
+    try
+        test_v = rand(n)
+        original = copy(test_v)
+        blur_1D(test_v, 5)
+        if test_v != original
+            md"""
+            !!! danger "Oopsie!"
+                It looks like your function _modifies_ `v`. Can you write it without doing so? Maybe you can use `copy`.
+            """
+        end
+    catch
+    end
 end
 
 # ╔═╡ 809f5330-ee09-11ea-0e5b-415044b6ac1f
@@ -557,29 +557,29 @@ Again, we need to take care about what happens if $v_{i -n }$ falls off the end 
 # ╔═╡ 28e20950-ee0c-11ea-0e0a-b5f2e570b56e
 "v: vector to be convolved; k: kernel vector"
 function convolve_vector(v, k)
-	n = length(k)
-	@assert isodd(n)
-	l = (n-1)÷2
-	
-	vnew = zeros(size(v))
-	# not extending
-	#for i = 1+l:n-l
-	#	vnew[i] = sum(v[i-l:i+l] .* k)
-	#end
-	# extending
-	for i = 1:n
-		iwin = i-l:i+l
-		vnew[i] = sum(extend(v, iwin) .* k)
-	end
-	
-	return vnew
+    n = length(k)
+    @assert isodd(n)
+    l = (n-1)÷2
+    
+    vnew = zeros(size(v))
+    # not extending
+    #for i = 1+l:n-l
+    #	vnew[i] = sum(v[i-l:i+l] .* k)
+    #end
+    # extending
+    for i = 1:n
+        iwin = i-l:i+l
+        vnew[i] = sum(extend(v, iwin) .* k)
+    end
+    
+    return vnew
 end
 
 # ╔═╡ 93284f92-ee12-11ea-0342-833b1a30625c
 test_convolution = let
-	v = [1, 10, 100, 1000, 10000]
-	k = [0, 1, 0]
-	convolve_vector(v, k)
+    v = [1, 10, 100, 1000, 10000]
+    k = [0, 1, 0]
+    convolve_vector(v, k)
 end
 
 # ╔═╡ 5eea882c-ee13-11ea-0d56-af81ecd30a4a
@@ -605,14 +605,14 @@ For simplicity you can take $\sigma=1$.
 
 # ╔═╡ 1c8b4658-ee0c-11ea-2ede-9b9ed7d3125e
 function gaussian_kernel(n)
-	s = 1  # sigma
-	@assert isodd(n)
-	l = (n-1)÷2
-	x = -l:l
-	
-	g = 1/(sqrt(2*pi*s^2)) * exp.(-x.^2/(2*s^2))
-	
-	return g ./ sum(g)
+    s = 1  # sigma
+    @assert isodd(n)
+    l = (n-1)÷2
+    x = -l:l
+    
+    g = 1/(sqrt(2*pi*s^2)) * exp.(-x.^2/(2*s^2))
+    
+    return g ./ sum(g)
 end
 
 # ╔═╡ f8bd22b8-ee14-11ea-04aa-ab16fd01826e
@@ -629,12 +629,12 @@ colored_line(gaussian_kernel(gaussian_kernel_size_1D))
 
 # ╔═╡ 38eb92f6-ee13-11ea-14d7-a503ac04302e
 test_gauss_1D_a = let
-	v = random_vect
-	k = gaussian_kernel(gaussian_kernel_size_1D)
-	
-	if k !== missing
-		convolve_vector(v, k)
-	end
+    v = random_vect
+    k = gaussian_kernel(gaussian_kernel_size_1D)
+    
+    if k !== missing
+        convolve_vector(v, k)
+    end
 end
 
 # ╔═╡ b424e2aa-ee14-11ea-33fa-35491e0b9c9d
@@ -642,12 +642,12 @@ colored_line(test_gauss_1D_a)
 
 # ╔═╡ 24c21c7c-ee14-11ea-1512-677980db1288
 test_gauss_1D_b = let
-	v = create_bar()
-	k = gaussian_kernel(gaussian_kernel_size_1D)
-	
-	if k !== missing
-		convolve_vector(v, k)
-	end
+    v = create_bar()
+    k = gaussian_kernel(gaussian_kernel_size_1D)
+    
+    if k !== missing
+        convolve_vector(v, k)
+    end
 end
 
 # ╔═╡ bc1c20a4-ee14-11ea-3525-63c9fa78f089
@@ -678,11 +678,11 @@ md"""
 
 # ╔═╡ 7c2ec6c6-ee15-11ea-2d7d-0d9401a5e5d1
 function extend_mat(M::AbstractMatrix, i, j)
-	m, n = size(M)
-	i = clamp.(i, 1, m)
-	j = clamp.(j, 1, n)
-	
-	return M[i, j]
+    m, n = size(M)
+    i = clamp.(i, 1, m)
+    j = clamp.(j, 1, n)
+    
+    return M[i, j]
 end
 
 # ╔═╡ 9afc4dca-ee16-11ea-354f-1d827aaa61d2
@@ -705,8 +705,8 @@ md"Extended with your `extend`:"
 
 # ╔═╡ 3cd535e4-ee26-11ea-2482-fb4ad43dda19
 let
-	philip_head = philip[250:430,110:230]
-	[extend_mat(philip_head, i, j) for (i,j) in Iterators.product(-50:size(philip_head,1)+51, (-50:size(philip_head,2)+51))]
+    philip_head = philip[250:430,110:230]
+    [extend_mat(philip_head, i, j) for (i,j) in Iterators.product(-50:size(philip_head,1)+51, (-50:size(philip_head,2)+51))]
 end
 
 # ╔═╡ 7c41f0ca-ee15-11ea-05fb-d97a836659af
@@ -717,41 +717,41 @@ md"""
 
 # ╔═╡ 8b96e0bc-ee15-11ea-11cd-cfecea7075a0
 begin
-	# for 2-d array-like of numbers
-	function convolve_image(M::AbstractMatrix, K::AbstractMatrix)
-		m, n = size(M)
-		m_k, n_k = size(K)
-		l_m = (m_k-1)÷2
-		l_n = (n_k-1)÷2
-		
-		Mnew = zeros(size(M))
-		# Julia is column-major, like Fortran 
-		# so in principle the col loop should go outside
-		# so that the faster (inner) loop is over elements of a col
-		#for i = 1:m 
-		for j = 1:n
-			#for j = 1:n
-			for i = 1:m
-				Mnew[i,j] = sum(extend_mat(M, i-l_m:i+l_m, j-l_n:j+l_n) .* K)
-			end
-		end
-		return Mnew
-	end
-	
-	# for 2-d array of RGBs
-	function convolve_image(im::Array{<:AbstractRGB,2}, K::AbstractMatrix)
-		cv = channelview(im)
-		cv_new = copy(cv)
-		for i = 1:size(cv, 1)  # loop over channels
-			cv_new[i,:,:] = convolve_image(cv[i,:,:], K)
-		end
-		return colorview(RGB, cv_new)
-	end
-	
-	# for 2-d array of Grays
-	function convolve_image(im::Array{<:AbstractGray,2}, K::AbstractMatrix)
-		return convolve_image(Float64.(im), K)
-	end
+    # for 2-d array-like of numbers
+    function convolve_image(M::AbstractMatrix, K::AbstractMatrix)
+        m, n = size(M)
+        m_k, n_k = size(K)
+        l_m = (m_k-1)÷2
+        l_n = (n_k-1)÷2
+        
+        Mnew = zeros(size(M))
+        # Julia is column-major, like Fortran 
+        # so in principle the col loop should go outside
+        # so that the faster (inner) loop is over elements of a col
+        #for i = 1:m 
+        for j = 1:n
+            #for j = 1:n
+            for i = 1:m
+                Mnew[i,j] = sum(extend_mat(M, i-l_m:i+l_m, j-l_n:j+l_n) .* K)
+            end
+        end
+        return Mnew
+    end
+    
+    # for 2-d array of RGBs
+    function convolve_image(im::Array{<:AbstractRGB,2}, K::AbstractMatrix)
+        cv = channelview(im)
+        cv_new = copy(cv)
+        for i = 1:size(cv, 1)  # loop over channels
+            cv_new[i,:,:] = convolve_image(cv[i,:,:], K)
+        end
+        return colorview(RGB, cv_new)
+    end
+    
+    # for 2-d array of Grays
+    function convolve_image(im::Array{<:AbstractGray,2}, K::AbstractMatrix)
+        return convolve_image(Float64.(im), K)
+    end
 end
 
 # ╔═╡ 11e0c730-f5de-11ea-1a89-c1654db3a938
@@ -768,9 +768,9 @@ typeof(test_image_with_border)
 
 # ╔═╡ 275a99c8-ee1e-11ea-0a76-93e3618c9588
 K_test = [
-	0   0  0
-	1/2 0  1/2
-	0   0  0
+    0   0  0
+    1/2 0  1/2
+    0   0  0
 ]
 
 # ╔═╡ 42dfa206-ee1e-11ea-1fcd-21671042064c
@@ -806,15 +806,15 @@ $$G(x,y)=\frac{1}{2\pi \sigma^2}e^{\frac{-(x^2+y^2)}{2\sigma^2}}$$
 
 # ╔═╡ dddb4b70-f5df-11ea-01fd-11bb3750ce27
 function gaussian_kernel_2d(n, s=1)
-	@assert isodd(n)
-	l = (n-1)÷2
-	X = -l:l
-	Y = -l:l
-		
-	g = [1/(sqrt(2*pi*s^2)) * exp(-(x^2 + y^2)/(2*s^2)) 
-		 for (x, y) in Iterators.product(X, Y)] 
-	
-	return g ./ sum(g)
+    @assert isodd(n)
+    l = (n-1)÷2
+    X = -l:l
+    Y = -l:l
+        
+    g = [1/(sqrt(2*pi*s^2)) * exp(-(x^2 + y^2)/(2*s^2)) 
+         for (x, y) in Iterators.product(X, Y)] 
+    
+    return g ./ sum(g)
 end
 
 # ╔═╡ 2785d370-f5e1-11ea-2687-2b4eacd02834
@@ -825,7 +825,7 @@ end
 
 # ╔═╡ aad67fd0-ee15-11ea-00d4-274ec3cda3a3
 function with_gaussian_blur(image)
-	return convolve_image(image, gaussian_kernel_2d(n_gauss_2d, s_gauss_2d))
+    return convolve_image(image, gaussian_kernel_2d(n_gauss_2d, s_gauss_2d))
 end
 
 # ╔═╡ 8ae59674-ee18-11ea-3815-f50713d0fa08
@@ -876,32 +876,32 @@ For simplicity you can choose one of the "channels" (colours) in the image to ap
 
 # ╔═╡ 9eeb876c-ee15-11ea-1794-d3ea79f47b75
 begin
-	g1 = [1, 2, 1]; g2 = [1, 0, -1]  # note `'` is technically adjoint, not transpose
-	G1 = g1 * g2'
-	G2 = g2 * g1'
+    g1 = [1, 2, 1]; g2 = [1, 0, -1]  # note `'` is technically adjoint, not transpose
+    G1 = g1 * g2'
+    G2 = g2 * g1'
 
-	function with_sobel_edge_detect(image)
+    function with_sobel_edge_detect(image)
 
-		Gx = convolve_image(image, G1)
-		Gy = convolve_image(image, G2)
+        Gx = convolve_image(image, G1)
+        Gy = convolve_image(image, G2)
 
-		cv_new = copy(channelview(image))
-		for i = 1:size(cv_new, 1)
-			Gxi = @view channelview(Gx)[i,:,:]
-			Gyi = @view channelview(Gy)[i,:,:]
-			cv_new[i,:,:] = sqrt.(Gxi.^2 + Gyi.^2)
-		end
+        cv_new = copy(channelview(image))
+        for i = 1:size(cv_new, 1)
+            Gxi = @view channelview(Gx)[i,:,:]
+            Gyi = @view channelview(Gy)[i,:,:]
+            cv_new[i,:,:] = sqrt.(Gxi.^2 + Gyi.^2)
+        end
 
-		# above code works for RGB or Gray, 
-		# but we need to return the right type
-		if isa(image, Array{<:AbstractRGB})
-			return colorview(RGB, cv_new)
-		elseif isa(image, Array{<:AbstractGray})
-			return colorview(Gray, cv_new)
-		else
-			return nothing
-		end
-	end
+        # above code works for RGB or Gray, 
+        # but we need to return the right type
+        if isa(image, Array{<:AbstractRGB})
+            return colorview(RGB, cv_new)
+        elseif isa(image, Array{<:AbstractGray})
+            return colorview(Gray, cv_new)
+        else
+            return nothing
+        end
+    end
 end
 
 # ╔═╡ 569b36b2-f5e5-11ea-1d76-e7abe0c43fce
@@ -912,7 +912,7 @@ hint(text) = Markdown.MD(Markdown.Admonition("hint", "Hint", [text]))
 
 # ╔═╡ b1d5ca28-edf6-11ea-269e-75a9fb549f1d
 hint(md"You can find out more about any function (like `rand`) by creating a new cell and typing:
-	
+    
 ```
 ?rand
 ```
@@ -954,223 +954,223 @@ not_defined(variable_name) = Markdown.MD(Markdown.Admonition("danger", "Oopsie!"
 
 # ╔═╡ 397941fc-edee-11ea-33f2-5d46c759fbf7
 if !@isdefined(random_vect)
-	not_defined(:random_vect)
+    not_defined(:random_vect)
 elseif ismissing(random_vect)
-	still_missing()
+    still_missing()
 elseif !(random_vect isa Vector)
-	keep_working(md"`random_vect` should be a `Vector`.")
+    keep_working(md"`random_vect` should be a `Vector`.")
 elseif length(random_vect) != 10
-	keep_working(md"`random_vect` does not have the correct size.")
+    keep_working(md"`random_vect` does not have the correct size.")
 else
-	correct()
+    correct()
 end
 
 # ╔═╡ 38dc80a0-edef-11ea-10e9-615255a4588c
 if !@isdefined(mean)
-	not_defined(:mean)
+    not_defined(:mean)
 else
-	let
-		result = mean([1,2,3])
-		if ismissing(result)
-			still_missing()
-		elseif isnothing(result)
-			keep_working(md"Did you forget to write `return`?")
-		elseif result != 2
-			keep_working()
-		else
-			correct()
-		end
-	end
+    let
+        result = mean([1,2,3])
+        if ismissing(result)
+            still_missing()
+        elseif isnothing(result)
+            keep_working(md"Did you forget to write `return`?")
+        elseif result != 2
+            keep_working()
+        else
+            correct()
+        end
+    end
 end
 
 # ╔═╡ 2b1ccaca-edee-11ea-34b0-c51659f844d0
 if !@isdefined(m)
-	not_defined(:m)
+    not_defined(:m)
 elseif ismissing(m)
-	still_missing()
+    still_missing()
 elseif !(m isa Number)
-	keep_working(md"`m` should be a number.")
+    keep_working(md"`m` should be a number.")
 elseif m != mean(random_vect)
-	keep_working()
+    keep_working()
 else
-	correct()
+    correct()
 end
 
 # ╔═╡ e3394c8a-edf0-11ea-1bb8-619f7abb6881
 if !@isdefined(create_bar)
-	not_defined(:create_bar)
+    not_defined(:create_bar)
 else
-	let
-		result = create_bar()
-		if ismissing(result)
-			still_missing()
-		elseif isnothing(result)
-			keep_working(md"Did you forget to write `return`?")
-		elseif !(result isa Vector) || length(result) != 100
-			keep_working(md"The result should be a `Vector` with 100 elements.")
-		elseif result[[1,50,100]] != [0,1,0]
-			keep_working()
-		else
-			correct()
-		end
-	end
+    let
+        result = create_bar()
+        if ismissing(result)
+            still_missing()
+        elseif isnothing(result)
+            keep_working(md"Did you forget to write `return`?")
+        elseif !(result isa Vector) || length(result) != 100
+            keep_working(md"The result should be a `Vector` with 100 elements.")
+        elseif result[[1,50,100]] != [0,1,0]
+            keep_working()
+        else
+            correct()
+        end
+    end
 end
 
 # ╔═╡ adfbe9b2-ed6c-11ea-09ac-675262f420df
 if !@isdefined(vecvec_to_matrix)
-	not_defined(:vecvec_to_matrix)
+    not_defined(:vecvec_to_matrix)
 else
-	let
-		input = [[6,7],[8,9]]
+    let
+        input = [[6,7],[8,9]]
 
-		result = vecvec_to_matrix(input)
-		shouldbe = [6 7; 8 9]
+        result = vecvec_to_matrix(input)
+        shouldbe = [6 7; 8 9]
 
-		if ismissing(result)
-			still_missing()
-		elseif isnothing(result)
-			keep_working(md"Did you forget to write `return`?")
-		elseif !(result isa Matrix)
-			keep_working(md"The result should be a `Matrix`")
-		elseif result != shouldbe && result != shouldbe'
-			keep_working()
-		else
-			correct()
-		end
-	end
+        if ismissing(result)
+            still_missing()
+        elseif isnothing(result)
+            keep_working(md"Did you forget to write `return`?")
+        elseif !(result isa Matrix)
+            keep_working(md"The result should be a `Matrix`")
+        elseif result != shouldbe && result != shouldbe'
+            keep_working()
+        else
+            correct()
+        end
+    end
 end
 
 # ╔═╡ e06b7fbc-edf2-11ea-1708-fb32599dded3
 if !@isdefined(matrix_to_vecvec)
-	not_defined(:matrix_to_vecvec)
+    not_defined(:matrix_to_vecvec)
 else
-	let
-		input = [6 7 8; 8 9 10]
-		result = matrix_to_vecvec(input)
-		shouldbe = [[6,7,8],[8,9,10]]
-		shouldbe2 = [[6,8], [7,9], [8,10]]
+    let
+        input = [6 7 8; 8 9 10]
+        result = matrix_to_vecvec(input)
+        shouldbe = [[6,7,8],[8,9,10]]
+        shouldbe2 = [[6,8], [7,9], [8,10]]
 
-		if ismissing(result)
-			still_missing()
-		elseif isnothing(result)
-			keep_working(md"Did you forget to write `return`?")
-		elseif result != shouldbe && result != shouldbe2
-			keep_working()
-		else
-			correct()
-		end
-	end
+        if ismissing(result)
+            still_missing()
+        elseif isnothing(result)
+            keep_working(md"Did you forget to write `return`?")
+        elseif result != shouldbe && result != shouldbe2
+            keep_working()
+        else
+            correct()
+        end
+    end
 end
 
 # ╔═╡ 4d0158d0-ee0d-11ea-17c3-c169d4284acb
 if !@isdefined(mean_colors)
-	not_defined(:mean_colors)
+    not_defined(:mean_colors)
 else
-	let
-		input = reshape([RGB(1.0, 1.0, 1.0), RGB(1.0, 1.0, 0.0)], (2,1))
-		
-		result = mean_colors(input)
-		shouldbe = (1.0, 1.0, 0.5)
-		shouldbe2 = RGB(shouldbe...)
+    let
+        input = reshape([RGB(1.0, 1.0, 1.0), RGB(1.0, 1.0, 0.0)], (2,1))
+        
+        result = mean_colors(input)
+        shouldbe = (1.0, 1.0, 0.5)
+        shouldbe2 = RGB(shouldbe...)
 
-		if ismissing(result)
-			still_missing()
-		elseif isnothing(result)
-			keep_working(md"Did you forget to write `return`?")
-		elseif !(result == shouldbe) && !(result == shouldbe2)
-			keep_working()
-		else
-			correct()
-		end
-	end
+        if ismissing(result)
+            still_missing()
+        elseif isnothing(result)
+            keep_working(md"Did you forget to write `return`?")
+        elseif !(result == shouldbe) && !(result == shouldbe2)
+            keep_working()
+        else
+            correct()
+        end
+    end
 end
 
 # ╔═╡ c905b73e-ee1a-11ea-2e36-23b8e73bfdb6
 if !@isdefined(quantize)
-	not_defined(:quantize)
+    not_defined(:quantize)
 else
-	let
-		result = quantize(.3)  # TODO: not sufficient test case! (any `digits` works)
+    let
+        result = quantize(.3)  # TODO: not sufficient test case! (any `digits` works)
 
-		if ismissing(result)
-			still_missing()
-		elseif isnothing(result)
-			keep_working(md"Did you forget to write `return`?")
-		elseif result != .3
-			if quantize(0.35) == .3
-				almost(md"What should quantize(`0.2`) be?")
-			else
-				keep_working()
-			end
-		else
-			correct()
-		end
-	end
+        if ismissing(result)
+            still_missing()
+        elseif isnothing(result)
+            keep_working(md"Did you forget to write `return`?")
+        elseif result != .3
+            if quantize(0.35) == .3
+                almost(md"What should quantize(`0.2`) be?")
+            else
+                keep_working()
+            end
+        else
+            correct()
+        end
+    end
 end
 
 # ╔═╡ bcf98dfc-ee1b-11ea-21d0-c14439500971
 if !@isdefined(extend)
-	not_defined(:extend)
+    not_defined(:extend)
 else
-	let
-		result = extend([6,7],-10)
+    let
+        result = extend([6,7],-10)
 
-		if ismissing(result)
-			still_missing()
-		elseif isnothing(result)
-			keep_working(md"Did you forget to write `return`?")
-		elseif result != 6 || extend([6,7],10) != 7
-			keep_working()
-		else
-			correct()
-		end
-	end
+        if ismissing(result)
+            still_missing()
+        elseif isnothing(result)
+            keep_working(md"Did you forget to write `return`?")
+        elseif result != 6 || extend([6,7],10) != 7
+            keep_working()
+        else
+            correct()
+        end
+    end
 end
 
 # ╔═╡ 7ffd14f8-ee1d-11ea-0343-b54fb0333aea
 if !@isdefined(convolve_vector)
-	not_defined(:convolve_vector)
+    not_defined(:convolve_vector)
 else
-	let
-		x = [1, 10, 100]
-		result = convolve_vector(x, [0, 1, 1])
-		shouldbe = [11, 110, 200]
-		shouldbe2 = [2, 11, 110]
+    let
+        x = [1, 10, 100]
+        result = convolve_vector(x, [0, 1, 1])
+        shouldbe = [11, 110, 200]
+        shouldbe2 = [2, 11, 110]
 
-		if ismissing(result)
-			still_missing()
-		elseif isnothing(result)
-			keep_working(md"Did you forget to write `return`?")
-		elseif !(result isa AbstractVector)
-			keep_working(md"The returned object is not a `Vector`.")
-		elseif size(result) != size(x)
-			keep_working(md"The returned vector has the wrong dimensions.")
-		elseif result != shouldbe && result != shouldbe2
-			keep_working()
-		else
-			correct()
-		end
-	end
+        if ismissing(result)
+            still_missing()
+        elseif isnothing(result)
+            keep_working(md"Did you forget to write `return`?")
+        elseif !(result isa AbstractVector)
+            keep_working(md"The returned object is not a `Vector`.")
+        elseif size(result) != size(x)
+            keep_working(md"The returned vector has the wrong dimensions.")
+        elseif result != shouldbe && result != shouldbe2
+            keep_working()
+        else
+            correct()
+        end
+    end
 end
 
 # ╔═╡ efd1ceb4-ee1c-11ea-350e-f7e3ea059024
 if !@isdefined(extend_mat)
-	not_defined(:extend_mat)
+    not_defined(:extend_mat)
 else
-	let
-		input = [42 37; 1 0]
-		result = extend_mat(input, -2, -2)
+    let
+        input = [42 37; 1 0]
+        result = extend_mat(input, -2, -2)
 
-		if ismissing(result)
-			still_missing()
-		elseif isnothing(result)
-			keep_working(md"Did you forget to write `return`?")
-		elseif result != 42 || extend_mat(input, -1, 3) != 37
-			keep_working()
-		else
-			correct()
-		end
-	end
+        if ismissing(result)
+            still_missing()
+        elseif isnothing(result)
+            keep_working(md"Did you forget to write `return`?")
+        elseif result != 42 || extend_mat(input, -1, 3) != 37
+            keep_working()
+        else
+            correct()
+        end
+    end
 end
 
 # ╔═╡ 115ded8c-ee0a-11ea-3493-89487315feb7
@@ -1202,200 +1202,200 @@ function camera_input(;max_size=200, default_url="https://i.imgur.com/SUmi94P.pn
 """
 <span class="pl-image waiting-for-permission">
 <style>
-	
-	.pl-image.popped-out {
-		position: fixed;
-		top: 0;
-		right: 0;
-		z-index: 5;
-	}
+    
+    .pl-image.popped-out {
+        position: fixed;
+        top: 0;
+        right: 0;
+        z-index: 5;
+    }
 
-	.pl-image #video-container {
-		width: 250px;
-	}
+    .pl-image #video-container {
+        width: 250px;
+    }
 
-	.pl-image video {
-		border-radius: 1rem 1rem 0 0;
-	}
-	.pl-image.waiting-for-permission #video-container {
-		display: none;
-	}
-	.pl-image #prompt {
-		display: none;
-	}
-	.pl-image.waiting-for-permission #prompt {
-		width: 250px;
-		height: 200px;
-		display: grid;
-		place-items: center;
-		font-family: monospace;
-		font-weight: bold;
-		text-decoration: underline;
-		cursor: pointer;
-		border: 5px dashed rgba(0,0,0,.5);
-	}
+    .pl-image video {
+        border-radius: 1rem 1rem 0 0;
+    }
+    .pl-image.waiting-for-permission #video-container {
+        display: none;
+    }
+    .pl-image #prompt {
+        display: none;
+    }
+    .pl-image.waiting-for-permission #prompt {
+        width: 250px;
+        height: 200px;
+        display: grid;
+        place-items: center;
+        font-family: monospace;
+        font-weight: bold;
+        text-decoration: underline;
+        cursor: pointer;
+        border: 5px dashed rgba(0,0,0,.5);
+    }
 
-	.pl-image video {
-		display: block;
-	}
-	.pl-image .bar {
-		width: inherit;
-		display: flex;
-		z-index: 6;
-	}
-	.pl-image .bar#top {
-		position: absolute;
-		flex-direction: column;
-	}
-	
-	.pl-image .bar#bottom {
-		background: black;
-		border-radius: 0 0 1rem 1rem;
-	}
-	.pl-image .bar button {
-		flex: 0 0 auto;
-		background: rgba(255,255,255,.8);
-		border: none;
-		width: 2rem;
-		height: 2rem;
-		border-radius: 100%;
-		cursor: pointer;
-		z-index: 7;
-	}
-	.pl-image .bar button#shutter {
-		width: 3rem;
-		height: 3rem;
-		margin: -1.5rem auto .2rem auto;
-	}
+    .pl-image video {
+        display: block;
+    }
+    .pl-image .bar {
+        width: inherit;
+        display: flex;
+        z-index: 6;
+    }
+    .pl-image .bar#top {
+        position: absolute;
+        flex-direction: column;
+    }
+    
+    .pl-image .bar#bottom {
+        background: black;
+        border-radius: 0 0 1rem 1rem;
+    }
+    .pl-image .bar button {
+        flex: 0 0 auto;
+        background: rgba(255,255,255,.8);
+        border: none;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 100%;
+        cursor: pointer;
+        z-index: 7;
+    }
+    .pl-image .bar button#shutter {
+        width: 3rem;
+        height: 3rem;
+        margin: -1.5rem auto .2rem auto;
+    }
 
-	.pl-image video.takepicture {
-		animation: pictureflash 200ms linear;
-	}
+    .pl-image video.takepicture {
+        animation: pictureflash 200ms linear;
+    }
 
-	@keyframes pictureflash {
-		0% {
-			filter: grayscale(1.0) contrast(2.0);
-		}
+    @keyframes pictureflash {
+        0% {
+            filter: grayscale(1.0) contrast(2.0);
+        }
 
-		100% {
-			filter: grayscale(0.0) contrast(1.0);
-		}
-	}
+        100% {
+            filter: grayscale(0.0) contrast(1.0);
+        }
+    }
 </style>
 
-	<div id="video-container">
-		<div id="top" class="bar">
-			<button id="stop" title="Stop video">✖</button>
-			<button id="pop-out" title="Pop out/pop in">⏏</button>
-		</div>
-		<video playsinline autoplay></video>
-		<div id="bottom" class="bar">
-		<button id="shutter" title="Click to take a picture">📷</button>
-		</div>
-	</div>
-		
-	<div id="prompt">
-		<span>
-		Enable webcam
-		</span>
-	</div>
+    <div id="video-container">
+        <div id="top" class="bar">
+            <button id="stop" title="Stop video">✖</button>
+            <button id="pop-out" title="Pop out/pop in">⏏</button>
+        </div>
+        <video playsinline autoplay></video>
+        <div id="bottom" class="bar">
+        <button id="shutter" title="Click to take a picture">📷</button>
+        </div>
+    </div>
+        
+    <div id="prompt">
+        <span>
+        Enable webcam
+        </span>
+    </div>
 
 <script>
-	// based on https://github.com/fonsp/printi-static (by the same author)
+    // based on https://github.com/fonsp/printi-static (by the same author)
 
-	const span = this.currentScript.parentElement
-	const video = span.querySelector("video")
-	const popout = span.querySelector("button#pop-out")
-	const stop = span.querySelector("button#stop")
-	const shutter = span.querySelector("button#shutter")
-	const prompt = span.querySelector(".pl-image #prompt")
+    const span = this.currentScript.parentElement
+    const video = span.querySelector("video")
+    const popout = span.querySelector("button#pop-out")
+    const stop = span.querySelector("button#stop")
+    const shutter = span.querySelector("button#shutter")
+    const prompt = span.querySelector(".pl-image #prompt")
 
-	const maxsize = $(max_size)
+    const maxsize = $(max_size)
 
-	const send_source = (source, src_width, src_height) => {
-		const scale = Math.min(1.0, maxsize / src_width, maxsize / src_height)
+    const send_source = (source, src_width, src_height) => {
+        const scale = Math.min(1.0, maxsize / src_width, maxsize / src_height)
 
-		const width = Math.floor(src_width * scale)
-		const height = Math.floor(src_height * scale)
+        const width = Math.floor(src_width * scale)
+        const height = Math.floor(src_height * scale)
 
-		const canvas = html`<canvas width=\${width} height=\${height}>`
-		const ctx = canvas.getContext("2d")
-		ctx.drawImage(source, 0, 0, width, height)
+        const canvas = html`<canvas width=\${width} height=\${height}>`
+        const ctx = canvas.getContext("2d")
+        ctx.drawImage(source, 0, 0, width, height)
 
-		span.value = {
-			width: width,
-			height: height,
-			data: ctx.getImageData(0, 0, width, height).data,
-		}
-		span.dispatchEvent(new CustomEvent("input"))
-	}
-	
-	const clear_camera = () => {
-		window.stream.getTracks().forEach(s => s.stop());
-		video.srcObject = null;
+        span.value = {
+            width: width,
+            height: height,
+            data: ctx.getImageData(0, 0, width, height).data,
+        }
+        span.dispatchEvent(new CustomEvent("input"))
+    }
+    
+    const clear_camera = () => {
+        window.stream.getTracks().forEach(s => s.stop());
+        video.srcObject = null;
 
-		span.classList.add("waiting-for-permission");
-	}
+        span.classList.add("waiting-for-permission");
+    }
 
-	prompt.onclick = () => {
-		navigator.mediaDevices.getUserMedia({
-			audio: false,
-			video: {
-				facingMode: "environment",
-			},
-		}).then(function(stream) {
+    prompt.onclick = () => {
+        navigator.mediaDevices.getUserMedia({
+            audio: false,
+            video: {
+                facingMode: "environment",
+            },
+        }).then(function(stream) {
 
-			stream.onend = console.log
+            stream.onend = console.log
 
-			window.stream = stream
-			video.srcObject = stream
-			window.cameraConnected = true
-			video.controls = false
-			video.play()
-			video.controls = false
+            window.stream = stream
+            video.srcObject = stream
+            window.cameraConnected = true
+            video.controls = false
+            video.play()
+            video.controls = false
 
-			span.classList.remove("waiting-for-permission");
+            span.classList.remove("waiting-for-permission");
 
-		}).catch(function(error) {
-			console.log(error)
-		});
-	}
-	stop.onclick = () => {
-		clear_camera()
-	}
-	popout.onclick = () => {
-		span.classList.toggle("popped-out")
-	}
+        }).catch(function(error) {
+            console.log(error)
+        });
+    }
+    stop.onclick = () => {
+        clear_camera()
+    }
+    popout.onclick = () => {
+        span.classList.toggle("popped-out")
+    }
 
-	shutter.onclick = () => {
-		const cl = video.classList
-		cl.remove("takepicture")
-		void video.offsetHeight
-		cl.add("takepicture")
-		video.play()
-		video.controls = false
-		console.log(video)
-		send_source(video, video.videoWidth, video.videoHeight)
-	}
-	
-	
-	document.addEventListener("visibilitychange", () => {
-		if (document.visibilityState != "visible") {
-			clear_camera()
-		}
-	})
+    shutter.onclick = () => {
+        const cl = video.classList
+        cl.remove("takepicture")
+        void video.offsetHeight
+        cl.add("takepicture")
+        video.play()
+        video.controls = false
+        console.log(video)
+        send_source(video, video.videoWidth, video.videoHeight)
+    }
+    
+    
+    document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState != "visible") {
+            clear_camera()
+        }
+    })
 
 
-	// Set a default image
+    // Set a default image
 
-	const img = html`<img crossOrigin="anonymous">`
+    const img = html`<img crossOrigin="anonymous">`
 
-	img.onload = () => {
-	console.log("helloo")
-		send_source(img, img.width, img.height)
-	}
-	img.src = "$(default_url)"
-	console.log(img)
+    img.onload = () => {
+    console.log("helloo")
+        send_source(img, img.width, img.height)
+    }
+    img.src = "$(default_url)"
+    console.log(img)
 </script>
 </span>
 """ |> HTML
@@ -1410,36 +1410,36 @@ end
 # ╔═╡ e15ad330-ee0d-11ea-25b6-1b1b3f3d7888
 
 function process_raw_camera_data(raw_camera_data)
-	# the raw image data is a long byte array, we need to transform it into something
-	# more "Julian" - something with more _structure_.
-	
-	# The encoding of the raw byte stream is:
-	# every 4 bytes is a single pixel
-	# every pixel has 4 values: Red, Green, Blue, Alpha
-	# (we ignore alpha for this notebook)
-	
-	# So to get the red values for each pixel, we take every 4th value, starting at 
-	# the 1st:
-	reds_flat = UInt8.(raw_camera_data["data"][1:4:end])
-	greens_flat = UInt8.(raw_camera_data["data"][2:4:end])
-	blues_flat = UInt8.(raw_camera_data["data"][3:4:end])
-	
-	# but these are still 1-dimensional arrays, nicknamed 'flat' arrays
-	# We will 'reshape' this into 2D arrays:
-	
-	width = raw_camera_data["width"]
-	height = raw_camera_data["height"]
-	
-	# shuffle and flip to get it in the right shape
-	reds = reshape(reds_flat, (width, height))' / 255.0
-	greens = reshape(greens_flat, (width, height))' / 255.0
-	blues = reshape(blues_flat, (width, height))' / 255.0
-	
-	# we have our 2D array for each color
-	# Let's create a single 2D array, where each value contains the R, G and B value of 
-	# that pixel
-	
-	RGB.(reds, greens, blues)
+    # the raw image data is a long byte array, we need to transform it into something
+    # more "Julian" - something with more _structure_.
+    
+    # The encoding of the raw byte stream is:
+    # every 4 bytes is a single pixel
+    # every pixel has 4 values: Red, Green, Blue, Alpha
+    # (we ignore alpha for this notebook)
+    
+    # So to get the red values for each pixel, we take every 4th value, starting at 
+    # the 1st:
+    reds_flat = UInt8.(raw_camera_data["data"][1:4:end])
+    greens_flat = UInt8.(raw_camera_data["data"][2:4:end])
+    blues_flat = UInt8.(raw_camera_data["data"][3:4:end])
+    
+    # but these are still 1-dimensional arrays, nicknamed 'flat' arrays
+    # We will 'reshape' this into 2D arrays:
+    
+    width = raw_camera_data["width"]
+    height = raw_camera_data["height"]
+    
+    # shuffle and flip to get it in the right shape
+    reds = reshape(reds_flat, (width, height))' / 255.0
+    greens = reshape(greens_flat, (width, height))' / 255.0
+    blues = reshape(blues_flat, (width, height))' / 255.0
+    
+    # we have our 2D array for each color
+    # Let's create a single 2D array, where each value contains the R, G and B value of 
+    # that pixel
+    
+    RGB.(reds, greens, blues)
 end
 
 # ╔═╡ f461f5f2-ee18-11ea-3d03-95f57f9bf09e

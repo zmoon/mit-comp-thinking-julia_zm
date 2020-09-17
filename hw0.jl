@@ -16,8 +16,8 @@ end
 # ╔═╡ 99054b20-f8ed-11ea-3f83-efcad5f29a1e
 # imports
 begin
-	using Compose
-	using PlutoUI
+    using Compose
+    using PlutoUI
 end
 
 # ╔═╡ fafae38e-e852-11ea-1208-732b4744e4c2
@@ -73,7 +73,7 @@ your answer here
 
 # ╔═╡ e7abd366-e7a6-11ea-30d7-1b6194614d0a
 if !(@isdefined ex_1_1)
-	md"""Do not change the name of the variable - write you answer as `ex_1_1 = "..."`"""
+    md"""Do not change the name of the variable - write you answer as `ex_1_1 = "..."`"""
 end
 
 # ╔═╡ d62f223c-e754-11ea-2470-e72a605a9d7e
@@ -83,11 +83,11 @@ Write a function newton_sqrt(x) which implements the above algorithm."
 
 # ╔═╡ 4896bf0c-e754-11ea-19dc-1380bb356ab6
 function newton_sqrt(x, error_margin=0.01, a=x / 2) # a=x/2 is the default value of `a`	
-	for _ in 1:100
-		a = (a + x/a)/2
-	end
-	
-	return a
+    for _ in 1:100
+        a = (a + x/a)/2
+    end
+    
+    return a
 end
 
 # ╔═╡ 7a01a508-e78a-11ea-11da-999d38785348
@@ -95,23 +95,23 @@ newton_sqrt(2)
 
 # ╔═╡ 682db9f8-e7b1-11ea-3949-6b683ca8b47b
 let
-	result = newton_sqrt(2, 0.01)
-	if !(result isa Number)
-		md"""
+    result = newton_sqrt(2, 0.01)
+    if !(result isa Number)
+        md"""
 !!! warning "Not a number"
     `newton_sqrt` did not return a number. Did you forget to write `return`?
-		"""
-	elseif abs(result - sqrt(2)) < 0.01
-		md"""
+        """
+    elseif abs(result - sqrt(2)) < 0.01
+        md"""
 !!! correct
     Well done!
-		"""
-	else
-		md"""
+        """
+    else
+        md"""
 !!! warning "Incorrect"
     Keep working on it!
-		"""
-	end
+        """
+    end
 end
 
 # ╔═╡ 088cc652-e7a8-11ea-0ca7-f744f6f3afdd
@@ -155,15 +155,15 @@ complexity = 6
 
 # ╔═╡ 1eb79812-e7b5-11ea-1c10-63b24803dd8a
 if complexity == 3 
-	md"""
+    md"""
 Try changing the value of **`complexity` to `5`** in the cell above. 
 
 Hit `Shift+Enter` to affect the change.
-	"""
+    """
 else
-	md"""
+    md"""
 **Great!** As you can see, all the cells in this notebook are linked together by the variables they define and use. Just like a spreadsheet!
-	"""
+    """
 end
 
 # ╔═╡ d7e8202c-e7b5-11ea-30d3-adcd6867d5f5
@@ -185,24 +185,24 @@ area_sierpinski(1) = 0.??
 
 # ╔═╡ ca8d2f72-e7b6-11ea-1893-f1e6d0a20dc7
 function area_sierpinski(n)
-	if n == 0
-		return 1.0
-	else
-		return 0.75 * area_sierpinski(n-1)
-	end
+    if n == 0
+        return 1.0
+    else
+        return 0.75 * area_sierpinski(n-1)
+    end
 end
 
 # ╔═╡ 71c78614-e7bc-11ea-0959-c7a91a10d481
 if area_sierpinski(0) == 1.0 && area_sierpinski(1) == 3 / 4
-	md"""
+    md"""
 !!! correct
     Well done!
-	"""
+    """
 else
-	md"""
+    md"""
 !!! warning "Incorrect"
     Keep working on it!
-	"""
+    """
 end
 
 # ╔═╡ c21096c0-e856-11ea-3dc5-a5b0cbf29335
@@ -234,24 +234,24 @@ triangle() = compose(context(), polygon([(1, 1), (0, 1), (1 / 2, 0)]))
 # program in. The best way to organize code is the one that promotes understanding.
 
 function place_in_3_corners(t)
-	# Uses the Compose library to place 3 copies of t
-	# in the 3 corners of a triangle.
-	# treat this function as a black box,
-	# or learn how it works from the Compose documentation here https://giovineitalia.github.io/Compose.jl/latest/tutorial/#Compose-is-declarative-1
-	compose(context(),
-			(context(1 / 4,   0, 1 / 2, 1 / 2), t),
-			(context(0, 1 / 2, 1 / 2, 1 / 2), t),
-			(context(1 / 2, 1 / 2, 1 / 2, 1 / 2), t))
+    # Uses the Compose library to place 3 copies of t
+    # in the 3 corners of a triangle.
+    # treat this function as a black box,
+    # or learn how it works from the Compose documentation here https://giovineitalia.github.io/Compose.jl/latest/tutorial/#Compose-is-declarative-1
+    compose(context(),
+            (context(1 / 4,   0, 1 / 2, 1 / 2), t),
+            (context(0, 1 / 2, 1 / 2, 1 / 2), t),
+            (context(1 / 2, 1 / 2, 1 / 2, 1 / 2), t))
 end
 
 # ╔═╡ e2848b9a-e703-11ea-24f9-b9131434a84b
 function sierpinski(n)
-	if n == 0
-		triangle()
-	else
-		t = sierpinski(n - 1) # recursively construct a smaller sierpinski's triangle
-		place_in_3_corners(t) # place it in the 3 corners of a triangle
-	end
+    if n == 0
+        triangle()
+    else
+        t = sierpinski(n - 1) # recursively construct a smaller sierpinski's triangle
+        place_in_3_corners(t) # place it in the 3 corners of a triangle
+    end
 end
 
 # ╔═╡ 9664ac52-e750-11ea-171c-e7d57741a68c

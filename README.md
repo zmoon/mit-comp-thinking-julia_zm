@@ -8,8 +8,8 @@ I am just trying to learn some Julia, so issues/PRs related to improving the cod
 The original versions of the Pluto notebooks include blocks for creating a temporary environment
 ```julia
 begin
-	using Pkg
-	Pkg.activate(mktempdir())
+    using Pkg
+    Pkg.activate(mktempdir())
 end
 ```
 and add needed packages to that environment.
