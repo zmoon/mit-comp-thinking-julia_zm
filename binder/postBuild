@@ -1,1 +1,10 @@
-julia -e 'import Pkg; Pkg.precompile()'
+#!/bin/bash
+
+# ensure Pluto is additionally in default env
+#julia -e 'import Pkg; Pkg.update(); Pkg.add(["Pluto", "PlutoUI"]); Pkg.precompile()'
+
+# install packages in binder/Project.toml
+#julia --project="~/binder" -e'import Pkg; Pkg.instantiate(); Pkg.resolve(); Pkg.precompile()'
+
+# install jupyter-pluto-proxy
+pip install ~/binder
