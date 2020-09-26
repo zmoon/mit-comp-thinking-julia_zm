@@ -16,6 +16,7 @@ end
 # ╔═╡ 99054b20-f8ed-11ea-3f83-efcad5f29a1e
 # imports
 begin
+	import Pkg; Pkg.activate(".")  # use my Project
     using Compose
     using PlutoUI
 end
@@ -145,7 +146,7 @@ A package contains a coherent set of functionality that you can often use a blac
 "
 
 # ╔═╡ 86ef4670-f523-11ea-2b86-3988d558a9d4
-import Pkg; Pkg.status()  # prints to console
+Pkg.status()  # prints to console
 
 # ╔═╡ dbc4da6a-e7b4-11ea-3b70-6f2abfcab992
 md"Just like the definition above, our `sierpinksi` function is _recursive_: it calls itself."

@@ -16,6 +16,7 @@ end
 # ╔═╡ 3e4eadb0-f8ee-11ea-2c15-a5bf17a98f5d
 # imports
 begin
+    import Pkg; Pkg.activate(".")  # use my Project
     using Images
     using PlutoUI
 end

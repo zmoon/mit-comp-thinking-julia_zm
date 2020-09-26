@@ -5,6 +5,24 @@ I am just trying to learn some Julia, so issues/PRs related to improving the cod
 
 ## Packages
 
+### local
+
+Add this repo's Project(`.toml`).
+```
+julia>]
+pkg> add Pluto  # to main/default env
+pkg> activate .
+pkg> instantiate  # install the packages (if needed)
+pkg> precompile  # why not
+```
+
+Or in one line without using Julia REPL:
+```
+julia -e 'import Pkg; Pkg.add(\"Pluto\"); Pkg.activate(\".\"); Pkg.instantiate(); Pkg.precompile()'
+```
+
+### background
+
 The original versions of the Pluto notebooks include blocks for creating a temporary environment
 ```julia
 begin
@@ -33,13 +51,6 @@ This reason this is currently needed in Pluto notebooks is because even if you c
 I can confirm that I did run in to this issue after changing such blocks to just imports...
 
 
-### local
-
-For the notebooks to work locally, then, needed packages must all have been added to the "default project".
-
 ### Binder
 
-We can speed up Binder start time by pre-compiling all packages needed by the notebooks.
-
 ...
-
