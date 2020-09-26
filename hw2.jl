@@ -531,18 +531,50 @@ You are expected to read and understand the [documentation on dictionaries](http
 function memoized_least_energy(energies, i, j, memory)
 	m, n = size(energies)
 	
-	# Replace the following line with your code.
-	[starting_pixel for i=1:m]
+	# base case
+	if i == m  # already at bottom -> no next
+		return energies[i,j]#, missing
+	end
+
+	# induction
+	# combine results from recursive calls to `least_energy`.
+
+	if haskey(memory, (i,j))
+		return memory[(i,j)]
+	else
+		# try all next-row possibilities
+		j_try = unique(clamp.([j-1, j, j+1], 1, n))
+		ress = [memoized_least_energy(energies, i+1, j_, memory) for j_ in j_try]
+
+		# return the result with minimum energy
+		res_emin, ires_emin = findmin(ress)
+		res = res_emin + energies[i,j]#, j_try[ires_emin]
+		
+		# update memory and return
+		memory[(i,j)] = res
+		return res
+	end	
 end
 
 # ╔═╡ 3e8b0868-f3bd-11ea-0c15-011bbd6ac051
 function recursive_memoized_seam(energies, starting_pixel)
 	memory = Dict{Tuple{Int,Int}, Float64}() # location => least energy.
-	                                         # pass this every time you call memoized_least_energy.
+	# ^ pass this every time you call memoized_least_energy.
 	m, n = size(energies)
 	
-	# Replace the following line with your code.
-	[rand(1:starting_pixel) for i=1:m]
+	j_seam = Array{Int, 1}(undef, m)
+	j_seam[1] = starting_pixel  # initial column index in the first row
+	for i = 2:m
+		# get the least energy for all next row possibilities
+		j_try = unique(clamp.([-1, 0, 1] .+ j_seam[i-1], 1, n))
+		emins = [memoized_least_energy(energies, i, j_, memory)
+			     for j_ in j_try]
+		
+		# go with the one with smallest emin
+		emin, iemin = findmin(emins)
+		j_seam[i] = j_try[iemin]
+	end
+	return j_seam
 end
 
 # ╔═╡ 4e3bcf88-f3c5-11ea-3ada-2ff9213647b7
@@ -563,8 +595,30 @@ Write a variation of `matrix_memoized_least_energy` and `matrix_memoized_seam` w
 function matrix_memoized_least_energy(energies, i, j, memory)
 	m, n = size(energies)
 	
-	# Replace the following line with your code.
-	[starting_pixel for i=1:m]
+	# base case
+	if i == m  # already at bottom -> no next
+		return energies[i,j]#, missing
+	end
+
+	# induction
+	# combine results from recursive calls to `least_energy`.
+
+	if memory[i,j] != 0
+		return memory[i,j]
+	else
+		# try all next-row possibilities
+		j_try = unique(clamp.([j-1, j, j+1], 1, n))
+		ress = [matrix_memoized_least_energy(energies, i+1, j_, memory) 
+			    for j_ in j_try]
+
+		# return the result with minimum energy
+		res_emin, ires_emin = findmin(ress)
+		res = res_emin + energies[i,j]#, j_try[ires_emin]
+		
+		# update memory and return
+		memory[i,j] = res
+		return res
+	end	
 end
 
 # ╔═╡ be7d40e2-f320-11ea-1b56-dff2a0a16e8d
@@ -572,8 +626,19 @@ function matrix_memoized_seam(energies, starting_pixel)
 	memory = zeros(size(energies)) # use this as storage -- intially it's all zeros
 	m, n = size(energies)
 	
-	# Replace the following line with your code.
-	[starting_pixel for i=1:m]
+	j_seam = Array{Int, 1}(undef, m)
+	j_seam[1] = starting_pixel  # initial column index in the first row
+	for i = 2:m
+		# get the least energy for all next row possibilities
+		j_try = unique(clamp.([-1, 0, 1] .+ j_seam[i-1], 1, n))
+		emins = [matrix_memoized_least_energy(energies, i, j_, memory)
+			     for j_ in j_try]
+		
+		# go with the one with smallest emin
+		emin, iemin = findmin(emins)
+		j_seam[i] = j_try[iemin]
+	end
+	return j_seam
 end
 
 # ╔═╡ 507f3870-f3c5-11ea-11f6-ada3bb087634
@@ -663,8 +728,8 @@ end
 
 # ╔═╡ 4e3ef866-f3c5-11ea-3fb0-27d1ca9a9a3f
 if shrink_dict
-	dict_carved = shrink_n(img, 200, recursive_memoized_seam)
-	md"Shrink by: $(@bind dict_n Slider(1:200, show_value=true))"
+	dict_carved = shrink_n(img, 10, recursive_memoized_seam)
+	md"Shrink by: $(@bind dict_n Slider(1:10, show_value=true))"
 end
 
 # ╔═╡ 6e73b1da-f3c5-11ea-145f-6383effe8a89
@@ -674,8 +739,8 @@ end
 
 # ╔═╡ 50829af6-f3c5-11ea-04a8-0535edd3b0aa
 if shrink_matrix
-	matrix_carved = shrink_n(img, 200, matrix_memoized_seam)
-	md"Shrink by: $(@bind matrix_n Slider(1:200, show_value=true))"
+	matrix_carved = shrink_n(img, 10, matrix_memoized_seam)
+	md"Shrink by: $(@bind matrix_n Slider(1:10, show_value=true))"
 end
 
 # ╔═╡ 9e56ecfa-f3c5-11ea-2e90-3b1839d12038
@@ -726,7 +791,7 @@ if compute_access
 end
 
 # ╔═╡ 38aa5b00-0034-11eb-231b-a7dc94d068b4
-recursive_seam(energy(pika), 7)
+@benchmark recursive_seam(energy(pika), 7)
 
 # ╔═╡ d88bc272-f392-11ea-0efd-15e0e2b2cd4e
 if shrink_recursive
@@ -738,6 +803,24 @@ end
 if shrink_recursive
 	recursive_carved[recursive_n]
 end
+
+# ╔═╡ 851adb9e-0047-11eb-0a66-331e23546ddb
+# check Pika results for consistency with original `least_energy`...
+begin
+	memory = Dict{Tuple{Int,Int}, Float64}()
+	
+	@assert memoized_least_energy(energy(pika), 1, 7, memory) == 
+		least_energy(energy(pika), 1, 7)[1]
+
+	@assert recursive_memoized_seam(energy(pika), 7) == 
+		recursive_seam(energy(pika), 7)
+end
+
+# ╔═╡ cfa37550-004d-11eb-2478-83758fc1f13e
+@benchmark recursive_memoized_seam(energy(pika), 7)
+
+# ╔═╡ e51bac90-004d-11eb-0316-6fff3912f50f
+@benchmark matrix_memoized_seam(energy(pika), 7)
 
 # ╔═╡ ffc17f40-f380-11ea-30ee-0fe8563c0eb1
 hint(text) = Markdown.MD(Markdown.Admonition("hint", "Hint", [text]))
@@ -946,19 +1029,22 @@ bigbreak
 # ╠═38aa5b00-0034-11eb-231b-a7dc94d068b4
 # ╟─1d55333c-f393-11ea-229a-5b1e9cabea6a
 # ╟─d88bc272-f392-11ea-0efd-15e0e2b2cd4e
-# ╠═e66ef06a-f392-11ea-30ab-7160e7723a17
+# ╟─e66ef06a-f392-11ea-30ab-7160e7723a17
 # ╟─c572f6ce-f372-11ea-3c9a-e3a21384edca
 # ╠═6d993a5c-f373-11ea-0dde-c94e3bbd1552
-# ╠═ea417c2a-f373-11ea-3bb0-b1b5754f2fac
+# ╟─ea417c2a-f373-11ea-3bb0-b1b5754f2fac
 # ╟─56a7f954-f374-11ea-0391-f79b75195f4d
 # ╠═b1d09bc8-f320-11ea-26bb-0101c9a204e2
+# ╠═851adb9e-0047-11eb-0a66-331e23546ddb
 # ╠═3e8b0868-f3bd-11ea-0c15-011bbd6ac051
+# ╠═cfa37550-004d-11eb-2478-83758fc1f13e
 # ╠═4e3bcf88-f3c5-11ea-3ada-2ff9213647b7
 # ╠═4e3ef866-f3c5-11ea-3fb0-27d1ca9a9a3f
 # ╠═6e73b1da-f3c5-11ea-145f-6383effe8a89
 # ╟─cf39fa2a-f374-11ea-0680-55817de1b837
 # ╠═c8724b5e-f3bd-11ea-0034-b92af21ca12d
 # ╠═be7d40e2-f320-11ea-1b56-dff2a0a16e8d
+# ╠═e51bac90-004d-11eb-0316-6fff3912f50f
 # ╟─507f3870-f3c5-11ea-11f6-ada3bb087634
 # ╠═50829af6-f3c5-11ea-04a8-0535edd3b0aa
 # ╠═9e56ecfa-f3c5-11ea-2e90-3b1839d12038
