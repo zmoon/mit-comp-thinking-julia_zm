@@ -656,8 +656,21 @@ Now it's easy to see that the above algorithm is equivalent to one that populate
 """
 
 # ╔═╡ ff055726-f320-11ea-32f6-2bf38d7dd310
-function least_energy_matrix(energies)
-	copy(energies)
+function least_energy_matrix(E)
+	# based on the provided nb from the lecture
+	m, n = size(E)
+	
+	least_E = zeros(size(E))
+	least_E[end, :] .= E[end, :]
+	for i in m-1:-1:1  # go from 2nd-to-last row up
+		for j in 1:n
+			j1, j2 = max(1, j-1), min(j+1, n)
+			e, dir = findmin(least_E[i+1, j1:j2])
+			least_E[i,j] += e
+			least_E[i,j] += E[i,j]
+		end
+	end
+	return least_E	
 end
 
 # ╔═╡ 92e19f22-f37b-11ea-25f7-e321337e375e
@@ -672,12 +685,43 @@ function seam_from_precomputed_least_energy(energies, starting_pixel::Int)
 	least_energies = least_energy_matrix(energies)
 	m, n = size(least_energies)
 	
-	# Replace the following line with your code.
-	[starting_pixel for i=1:m]
+	j_seam = Array{Int, 1}(undef, m)
+	j_seam[1] = starting_pixel  # initial column index in the first row
+	for i = 2:m
+		j_try = max(1, j_seam[i-1]-1):min(j_seam[i-1]+1, n)
+		_, imin = findmin(least_energies[i, j_try])
+		j_seam[i] = j_try[imin]
+	end
+	return j_seam
 end
+
+# ╔═╡ 6e508740-005a-11eb-32b4-69a60480c440
+md"""
+With this approach, we still are duplicating computations a lot with `shrink_n`. We can see that with the Pika example computing the least-E matrix takes the great majority of the time.
+"""
+
+# ╔═╡ bd062d00-0059-11eb-3109-97b9cc97b3a6
+function seam_from_truly_precomputed_least_energy(least_energies, starting_pixel::Int)
+	m, n = size(least_energies)
+	
+	j_seam = Array{Int, 1}(undef, m)
+	j_seam[1] = starting_pixel  # initial column index in the first row
+	for i = 2:m
+		j_try = max(1, j_seam[i-1]-1):min(j_seam[i-1]+1, n)
+		_, imin = findmin(least_energies[i, j_try])
+		j_seam[i] = j_try[imin]
+	end
+	return j_seam
+end
+
+# ╔═╡ e97074d0-005a-11eb-014a-576b6fd18ef9
+md"The problem with the above is that least-E in the vicinity of the seam can change with the seam is removed, so it should really be recomputed, but it only needs to be once for each new image. Maybe could optimize by only recomputing the sections that could potentially be affected? The simple fix is just to recompute the whole thing, as below."
 
 # ╔═╡ 51df0c98-f3c5-11ea-25b8-af41dc182bac
 md"Compute shrunk image: $(@bind shrink_bottomup CheckBox())"
+
+# ╔═╡ 719fe3e0-005b-11eb-3d2d-b7e732fca914
+md"This is a lot faster than the earlier methods. That is, I can run the whole 200 seams and not have to wait 5--10+ minutes (only a few seconds)."
 
 # ╔═╡ 6b4d6584-f3be-11ea-131d-e5bdefcc791b
 md"## Function library
@@ -696,6 +740,70 @@ function mark_path(img, path)
 		end
 	end
 	img′
+end
+
+# ╔═╡ 00e48370-0058-11eb-07d7-1d3645a0a6f8
+# inspired by https://discord.com/channels/750379744478101544/753830251146117141/755129307734474854 etc.
+function my_shrink_n(img, n, min_seam, imgs=[], least_E=nothing; show_lightning=true)
+	n==0 && return push!(imgs, img)
+
+	# if first time, compute least_E
+	if isnothing(least_E)
+		least_E = least_energy_matrix(energy(img))
+	end
+	
+	# find the column that has the smallest least-E
+	_, min_j = findmin(least_E[1,:])
+	
+	# use seam fn to find seam, starting in column `min_j`
+	min_seam_vec = min_seam(least_E, min_j)
+	
+	# remove the seam from both the image and the least-E matrix
+	img′ = remove_in_each_row(img, min_seam_vec)
+	least_E′ = remove_in_each_row(least_E, min_seam_vec)
+	
+	if show_lightning
+		push!(imgs, mark_path(img, min_seam_vec))
+	else
+		push!(imgs, img′)
+	end
+	my_shrink_n(img′, n-1, min_seam, imgs, least_E′)
+end
+
+# ╔═╡ 0bad9002-005b-11eb-2420-f333bee50854
+# inspired by https://discord.com/channels/750379744478101544/753830251146117141/755129307734474854 etc.
+function my_shrink_n_2(img, n, min_seam, imgs=[]; show_lightning=true)
+	n==0 && return push!(imgs, img)
+
+	least_E = least_energy_matrix(energy(img))
+	
+	# find the column that has the smallest least-E
+	_, min_j = findmin(least_E[1,:])
+	
+	# use seam fn to find seam, starting in column `min_j`
+	min_seam_vec = min_seam(least_E, min_j)
+	
+	# remove the seam from both the image and the least-E matrix
+	img′ = remove_in_each_row(img, min_seam_vec)
+	least_E′ = remove_in_each_row(least_E, min_seam_vec)
+	
+	if show_lightning
+		push!(imgs, mark_path(img, min_seam_vec))
+	else
+		push!(imgs, img′)
+	end
+	my_shrink_n_2(img′, n-1, min_seam, imgs)
+end
+
+# ╔═╡ 51e28596-f3c5-11ea-2237-2b72bbfaa001
+if shrink_bottomup
+	bottomup_carved = my_shrink_n_2(img, 200, seam_from_truly_precomputed_least_energy)
+	md"Shrink by: $(@bind bottomup_n Slider(1:200, show_value=true))"
+end
+
+# ╔═╡ 0a10acd8-f3c6-11ea-3e2f-7530a0af8c7f
+if shrink_bottomup
+	bottomup_carved[bottomup_n]
 end
 
 # ╔═╡ 437ba6ce-f37d-11ea-1010-5f6a6e282f9b
@@ -746,17 +854,6 @@ end
 # ╔═╡ 9e56ecfa-f3c5-11ea-2e90-3b1839d12038
 if shrink_matrix
 	matrix_carved[matrix_n]
-end
-
-# ╔═╡ 51e28596-f3c5-11ea-2237-2b72bbfaa001
-if shrink_bottomup
-	bottomup_carved = shrink_n(img, 200, seam_from_precomputed_least_energy)
-	md"Shrink by: $(@bind bottomup_n Slider(1:200, show_value=true))"
-end
-
-# ╔═╡ 0a10acd8-f3c6-11ea-3e2f-7530a0af8c7f
-if shrink_bottomup
-	bottomup_carved[bottomup_n]
 end
 
 # ╔═╡ ef26374a-f388-11ea-0b4e-67314a9a9094
@@ -821,6 +918,12 @@ end
 
 # ╔═╡ e51bac90-004d-11eb-0316-6fff3912f50f
 @benchmark matrix_memoized_seam(energy(pika), 7)
+
+# ╔═╡ 87a77c20-0056-11eb-2de7-bf0566c589e4
+@benchmark seam_from_precomputed_least_energy(energy(pika), 7)
+
+# ╔═╡ f56a6470-0056-11eb-2947-41e448e5b8cf
+@benchmark pika_least_energy = least_energy_matrix(energy(pika))
 
 # ╔═╡ ffc17f40-f380-11ea-30ee-0fe8563c0eb1
 hint(text) = Markdown.MD(Markdown.Admonition("hint", "Hint", [text]))
@@ -1054,9 +1157,17 @@ bigbreak
 # ╟─e0622780-f3b4-11ea-1f44-59fb9c5d2ebd
 # ╟─92e19f22-f37b-11ea-25f7-e321337e375e
 # ╠═795eb2c4-f37b-11ea-01e1-1dbac3c80c13
+# ╠═87a77c20-0056-11eb-2de7-bf0566c589e4
+# ╠═f56a6470-0056-11eb-2947-41e448e5b8cf
+# ╟─6e508740-005a-11eb-32b4-69a60480c440
+# ╠═bd062d00-0059-11eb-3109-97b9cc97b3a6
+# ╠═00e48370-0058-11eb-07d7-1d3645a0a6f8
+# ╟─e97074d0-005a-11eb-014a-576b6fd18ef9
+# ╠═0bad9002-005b-11eb-2420-f333bee50854
 # ╠═51df0c98-f3c5-11ea-25b8-af41dc182bac
 # ╠═51e28596-f3c5-11ea-2237-2b72bbfaa001
 # ╠═0a10acd8-f3c6-11ea-3e2f-7530a0af8c7f
+# ╟─719fe3e0-005b-11eb-3d2d-b7e732fca914
 # ╟─946b69a0-f3a2-11ea-2670-819a5dafe891
 # ╟─48089a00-f321-11ea-1479-e74ba71df067
 # ╟─6b4d6584-f3be-11ea-131d-e5bdefcc791b
